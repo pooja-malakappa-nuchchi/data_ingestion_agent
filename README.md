@@ -1,6 +1,7 @@
 # CleanSweep — AI-Powered Data Cleaning Agent
 
 CleanSweep is an interactive data cleaning assistant built with Python and Streamlit. It profiles messy CSV datasets, proposes an ordered cleaning plan using Google Gemini AI or rule-based fallback logic, and applies changes only after explicit human approval. Every step is logged, auditable, and reversible.
+
 **IMPORTANT** This is a working prototype. The core architecture, AI plan generation, human approval gate, deterministic execution in tools.py, and self-correction loop is designed with production principles in mind. To take it to production I would add PostgreSQL for session persistence, replace Streamlit with FastAPI + React, add authentication, chunked processing for large files, and a proper logging system. But for demonstrating the approach and the AI integration, the prototype covers the need.
 
 ---
