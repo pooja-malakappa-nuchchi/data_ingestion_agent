@@ -1,0 +1,18 @@
+Customer_ID,Customer_Name,Product_Code,City,Department,Salary,Order_Date,Rating,Purchase_Amount,Status,Notes
+1001,Alice Smith,A10023F,New York,Sales,55000,2024-01-15,4.0,110,active,
+1002,Bob Jones,B20034G,Los Angeles,Marketing,62000,2024-02-20,5.0,100,active,
+1003,Charlie Day,C30045H,Chicago,Engineering,85000,2024-03-10,3.0,120,inactive,
+1004,charlie brown,c30045h,Houston,,forty eight thousand,04-05-2024,4.0,100,active,
+1005,Evan Wright,E50067J,Phoenix,Engineering,90000,2024-05-18,5.0,110,ACTIVE,VIP customer
+1006,FIONA GREEN,f60078k,New York,Sales,53000,2024-06-22,3.0,100,inactive,
+1007,George Hall,G70089L,Los Angeles,MARKETING,Seventy-Two Thousand,2024-07-30,4.0,120,active  ,
+1008,Hannah Lee,H80090M,Chi  cago,HR,60000,2024-08-14,,110,active,
+1009,Ian Malcolm,I90101N,Houston,Engineering,N/A,2024-09-09,4.0,120,Inactive,
+1010,Julia Roberts,J10112O,Phoe  nix,sales,72000,2024-10-25,3.0,100,active,
+1011,  Karen Page  ,K11123P,Seattle,Sales,58000,2024-11-02,,110,active,
+1012,Liam Neeson,L12134Q,San  Diego,,67000,2024-12-12,4.0,120,inactive,
+1013,Mona Lisa,M13145R,Boston,Sales,61000,2024-04-19,5.0,999999,active,
+1014,Nina Simone,N14156S,Denver,Marketing,59000,2024-03-28,2.0,1,inactive,
+1001,Alice Smith,A10023F,New York,Sales,55000,2024-01-15,4.0,110,active,
+1002,BOB JONES,B20034G,Los Angeles,Marketing,62000,2024-02-20,5.0,100,active,
+1003,  Charlie Day  ,C30045H,Chicago,Engineering,85000,2024-03-10,3.0,120,inactive,
