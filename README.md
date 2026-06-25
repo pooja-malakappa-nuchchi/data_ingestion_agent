@@ -51,7 +51,7 @@ This means:
 | OpenAI GPT-4o | Paid per call — requires credit card |
 | Claude (Anthropic) | Paid — no free tier |
 | Llama 3 (local) | Requires GPU, complex local setup |
-| LangChain | complex for this use case |
+| LangChain | unnecessary complexity when calling just one API directly |
 | LangGraph | Designed for multi-node AI graphs with conditional routing. The current flow is linear enough that plain Python functions cover it. Natural next step if the agent needs multi-round autonomous reasoning. |
 
 Gemini 2.5 Flash was chosen because it is **free**, supports **structured JSON output** via `response_schema`, which is powerful.
