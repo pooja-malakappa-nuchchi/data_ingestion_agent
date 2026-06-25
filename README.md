@@ -111,6 +111,9 @@ data_ingestion_agent/
 │   ├── validate.py         # Post-clean quality checks
 │   ├── tools.py            # Cleaning operations library
 │   └── compare.py          # Excel comparison report builder
+├── tests/
+│   ├── test_tools.py       # Unit tests for all cleaning tool functions
+│   └── test_inspect.py     # Unit tests for issue detection logic
 └── data/
     └── make_messy.py       # Test data generator
 ```
