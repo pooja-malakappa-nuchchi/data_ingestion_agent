@@ -144,9 +144,14 @@ if uploaded_file is not None:
     if "plan" not in st.session_state or st.session_state.plan is None \
             or st.session_state.get("last_use_llm") != use_llm:
         with st.spinner("Generating cleaning plan..."):
-            st.session_state.plan = propose_plan(raw_df, issues, force_fallback=not use_llm)
+            plan_result, plan_warning = propose_plan(raw_df, issues, force_fallback=not use_llm)
+            st.session_state.plan = plan_result
+            st.session_state.plan_warning = plan_warning
             st.session_state.last_use_llm = use_llm
-            
+
+    if st.session_state.get("plan_warning"):
+        st.warning(f"⚠️ {st.session_state.plan_warning}")
+
     plan = st.session_state.plan
     
     # Display raw data preview and issue report

@@ -293,27 +293,30 @@ def propose_plan(df, issues, force_fallback=False):
     # This is the main function called by the application.
     # It tries to run the LLM reasoning first if allowed.
     # If the LLM fails or is disabled, it falls back to the rules.
+    # Returns a tuple of (CleaningPlan, warning_message) so the UI can show failures.
     if force_fallback:
-        return propose_plan_fallback(df, issues)
-        
-    # We check the environment keys to see which API is available
+        return propose_plan_fallback(df, issues), None
+
     load_dotenv()
     gemini_key = os.getenv("GEMINI_API_KEY")
     openai_key = os.getenv("OPENAI_API_KEY")
-    
+    warning_message = None
+
     # Try Google Gemini first since it is free
     if gemini_key and not gemini_key.startswith("your-"):
         try:
-            return propose_plan_gemini(df, issues)
+            return propose_plan_gemini(df, issues), None
         except Exception as e:
-            print(f"Gemini plan generation failed: {e}. Trying OpenAI...")
-            
+            warning_message = f"Gemini failed: {e}. Falling back to rule-based plan."
+            print(warning_message)
+
     # Try OpenAI next
     if openai_key and not openai_key.startswith("your-"):
         try:
-            return propose_plan_llm(df, issues)
+            return propose_plan_llm(df, issues), None
         except Exception as e:
-            print(f"OpenAI plan generation failed: {e}. Falling back to rule-based plan.")
-            
+            warning_message = f"OpenAI failed: {e}. Falling back to rule-based plan."
+            print(warning_message)
+
     # If all AI models fail or are not set up, run the fallback rules
-    return propose_plan_fallback(df, issues)
+    return propose_plan_fallback(df, issues), warning_message
