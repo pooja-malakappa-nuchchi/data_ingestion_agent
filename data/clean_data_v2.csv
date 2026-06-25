@@ -1,0 +1,11 @@
+Customer_ID,Customer_Name,Product_Code,City,Department,Salary,Order_Date,Rating,Status
+1001,Alice Smith,A10023F,New York,Sales,55000,2024-01-15,4,active
+1002,Bob Jones,B20034G,Los Angeles,Marketing,62000,2024-02-20,5,active
+1003,Charlie Brown,C30045H,Chicago,Engineering,85000,2024-03-10,3,inactive
+1004,Diana Prince,D40056I,Houston,HR,58000,2024-04-05,4,active
+1005,Evan Wright,E50067J,Phoenix,Engineering,90000,2024-05-18,5,active
+1006,Fiona Green,F60078K,New York,Sales,53000,2024-06-22,3,inactive
+1007,George Hall,G70089L,Los Angeles,Marketing,48000,2024-07-30,4,active
+1008,Hannah Lee,H80090M,Chicago,HR,60000,2024-08-14,5,active
+1009,Ian Malcolm,I90101N,Houston,Engineering,95000,2024-09-09,4,inactive
+1010,Julia Roberts,J10112O,Phoenix,Sales,72000,2024-10-25,3,active

@@ -1,0 +1,16 @@
+Employee_ID,Name,Department,Salary,Hire_Date
+101,  Alice Smith,Sales,55000,2020-01-15
+102,Bob Jones,marketing,62000,2019-05-12
+103,Charlie Brown,Engineering,,2021-03-22
+104,Diana Prince,,58000,2018-11-01
+105,Evan Wright,Engineering,N/A,2022-07-19
+106,Fiona Gallagher,Sales  ,53000,2020-10-10
+107,George Costanza,MARKETING,48000,2015-04-01
+108,Hannah Abbott  ,Human Resources,60000,2021-08-30
+109,Ian Malcolm,Engineering,95000,
+110,Julia Roberts,Sales,Seventy-Two Thousand,2016-12-25
+101,  Alice Smith,Sales,55000,2020-01-15
+102,Bob Jones,marketing,62000,2019-05-12
+106,Fiona Gallagher,Sales  ,53000,2020-10-10
+999,Rich Uncle,Executive,1500000,2010-01-01
+-99,Underpaid Intern,Marketing,10,2023-01-01
