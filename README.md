@@ -105,7 +105,8 @@ The sidebar has a checkbox: **"Use AI Reasoning (Gemini / OpenAI)"** — uncheck
 data_ingestion_agent/
 ├── app.py                  # Main Streamlit dashboard
 ├── requirements.txt        # Python package dependencies
-├── .env                    # API keys (never committed to GitHub)
+├── README.md               # Project documentation
+├── .env                    # API keys — create locally, never committed
 ├── agent/
 │   ├── inspect.py          # Issue detection
 │   ├── propose.py          # Plan generation (AI + fallback)
@@ -117,7 +118,8 @@ data_ingestion_agent/
 │   ├── test_tools.py       # Unit tests for all cleaning tool functions
 │   └── test_inspect.py     # Unit tests for issue detection logic
 └── data/
-    └── make_messy.py       # Test data generator
+    ├── make_messy_v2.py    # Comprehensive test data generator (every issue type)
+    └── messy_data_v2.csv   # Generated sample messy dataset
 ```
 
 ### `agent/inspect.py`
@@ -221,10 +223,11 @@ GEMINI_API_KEY=your_actual_key_here
 If you skip this step, the app still works using rule-based fallback. AI features are just disabled.
 
 ### Step 5 — Generate test data (optional)
+A sample messy dataset (`data/messy_data_v2.csv`) is already included in the repo, so you can skip this. To regenerate it:
 ```bash
-python data/make_messy.py
+python data/make_messy_v2.py
 ```
-This creates `data/messy_data.csv` — a sample CSV with intentional problems (duplicates, missing values, mixed case, word-form numbers, outliers) for testing.
+This rebuilds `data/messy_data_v2.csv` — a sample CSV containing every problem the app handles: all three duplicate kinds (exact, case-only, whitespace-only), missing values, nearly-empty columns, whitespace, mixed case, numbers and word-form numbers stored as text, dates stored as text, and outliers.
 
 ### Step 6 — Run the app
 ```bash
