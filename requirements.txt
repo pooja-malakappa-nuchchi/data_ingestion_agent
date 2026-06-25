@@ -1,0 +1,16 @@
+# This file lists the Python packages needed for the project.
+# It includes Streamlit for building the web interface.
+# It includes pandas for loading and cleaning the data tables.
+# It includes openpyxl for creating Excel files.
+# It includes Pydantic for defining structural rules.
+# It includes python-dotenv for reading credentials from a hidden file.
+# It includes openai, langgraph, and google-genai for building the smart reasoning parts.
+
+streamlit>=1.30.0
+pandas>=2.0.0
+openpyxl>=3.1.0
+pydantic>=2.0.0
+python-dotenv>=1.0.0
+openai>=1.0.0
+langgraph>=0.0.10
+google-genai>=0.1.0
