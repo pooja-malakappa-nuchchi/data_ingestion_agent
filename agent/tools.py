@@ -62,15 +62,28 @@ def fill_missing(df, column, strategy, fill_value=None):
 def coerce_type(df, column, to):
     # This tool changes the type of data in a column.
     # It can change text into numbers, dates, or groups.
+    # For numeric conversion, word-form numbers like "Seventy-Two Thousand" are converted first.
     # Any values that cannot be converted will become blank spaces.
     if column not in df.columns:
         return df, f"Column '{column}' not found."
-        
+
     new_df = df.copy()
     series = new_df[column]
     initial_na = series.isna().sum()
-    
+
     if to == "numeric":
+        try:
+            from word2number import w2n
+            def try_parse(x):
+                if isinstance(x, str):
+                    try:
+                        return w2n.word_to_num(x)
+                    except Exception:
+                        return x
+                return x
+            series = series.apply(try_parse)
+        except ImportError:
+            pass
         new_df[column] = pd.to_numeric(series, errors='coerce')
         desc = "numbers"
     elif to == "datetime":

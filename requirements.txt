@@ -14,3 +14,4 @@ python-dotenv>=1.0.0
 openai>=1.0.0
 langgraph>=0.0.10
 google-genai>=0.1.0
+word2number>=1.1
