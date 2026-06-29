@@ -9,7 +9,7 @@ import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 import pandas as pd
 
-def create_comparison_excel(raw_df, clean_df, execution_log):
+def create_comparison_excel(raw_df, clean_df, execution_log, plan_reasoning=None):
     # This function creates a full Excel workbook comparing the tables.
     # It adds sheets for Summary, Column Stats, Applied Operations, and Samples.
     # It returns the workbook as bytes so it can be downloaded.
@@ -39,6 +39,11 @@ def create_comparison_excel(raw_df, clean_df, execution_log):
     ws_summary.cell(2, 1).font = title_font
     ws_summary.append([])
     
+    if plan_reasoning:
+        ws_summary.append(["Agent Reasoning:", plan_reasoning])
+        ws_summary.cell(ws_summary.max_row, 1).font = bold_font
+        ws_summary.append([])
+        
     # Retrieve stats for before and after cleaning
     raw_rows = len(raw_df)
     raw_cols = len(raw_df.columns)

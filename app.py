@@ -89,10 +89,15 @@ uploaded_file = st.sidebar.file_uploader("Upload a messy CSV file", type=["csv"]
 
 # Detect file change to reset the cleaning state
 if uploaded_file:
-    current_file_name = uploaded_file.name
-    if "last_file_name" not in st.session_state or st.session_state.last_file_name != current_file_name:
+    # Check file size (limit to 200MB)
+    if uploaded_file.size > 200 * 1024 * 1024:
+        st.error("File is too large! Please upload a file smaller than 200MB.")
+        st.stop()
+        
+    current_file_id = uploaded_file.file_id
+    if "last_file_id" not in st.session_state or st.session_state.last_file_id != current_file_id:
         reset_cleaning_state()
-        st.session_state.last_file_name = current_file_name
+        st.session_state.last_file_id = current_file_id
 
 st.sidebar.markdown("---")
 st.sidebar.header("🤖 Reasoning Settings")
@@ -182,6 +187,7 @@ if uploaded_file is not None:
     
     # 4. Present cleaning plan with user permission gate
     st.subheader("📋 Proposed Cleaning Steps")
+    st.info(f"**Agent Reasoning:** {plan.plan_reasoning}")
     st.markdown("Review and approve the operations below. Only checked steps will be applied to the dataset.")
     
     if not plan.steps:
@@ -323,7 +329,7 @@ if uploaded_file is not None:
         # Button 2: Comparison Excel Workbook
         with col_dl2:
             with st.spinner("Generating comparison workbook..."):
-                excel_data = create_comparison_excel(raw_df, cleaned_df, execution_log)
+                excel_data = create_comparison_excel(raw_df, cleaned_df, execution_log, plan.plan_reasoning)
             st.download_button(
                 label="📊 Download Comparison Report (Excel)",
                 data=excel_data,

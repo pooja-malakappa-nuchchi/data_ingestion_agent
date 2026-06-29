@@ -112,7 +112,7 @@ def strip_whitespace(df, column):
         
     new_df = df.copy()
     new_df[column] = df[column].apply(
-        lambda x: re.sub(r' +', ' ', x.strip()) if isinstance(x, str) else x
+        lambda x: re.sub(r'\s+', ' ', x.strip()) if isinstance(x, str) else x
     )
 
     message = f"Removed extra spaces from the start, end, and inside text in column '{column}'."

@@ -10,8 +10,9 @@
 import os
 import pandas as pd
 from typing import List, Dict, Any, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from dotenv import load_dotenv
+from tenacity import retry, stop_after_attempt, wait_exponential
 
 DATE_FORMATS = [
     "%Y-%m-%d",
@@ -41,6 +42,8 @@ def looks_like_date(series):
 
 # Define the structure of a single cleaning step
 class CleaningStep(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    
     op: str = Field(description="The name of the operation from the toolset")
     column: Optional[str] = Field(None, description="The name of the column to clean, or None for the whole table")
     params: Dict[str, Any] = Field(default_factory=dict, description="Settings and options for the operation")
@@ -48,6 +51,9 @@ class CleaningStep(BaseModel):
 
 # Define the structure of the entire cleaning plan
 class CleaningPlan(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    
+    plan_reasoning: str = Field(description="A detailed explanation of the overall data cleaning strategy and why these specific steps were chosen")
     steps: List[CleaningStep] = Field(description="The ordered list of cleaning steps")
 
 # Sorting priorities for the cleaning operations
@@ -166,20 +172,29 @@ def propose_plan_fallback(df, issues):
     # Sort the steps based on the defined execution order
     unique_steps.sort(key=lambda s: OP_ORDER.get(s.op, 99))
     
-    return CleaningPlan(steps=unique_steps)
+    return CleaningPlan(
+        plan_reasoning="Rule-based fallback execution based on hardcoded deterministic rules because AI reasoning is disabled or unavailable.",
+        steps=unique_steps
+    )
 
-def remove_additional_properties(schema):
-    # This helper removes the additionalProperties key from Pydantic schemas.
-    # We do this because the free Gemini Developer API does not allow this key.
-    if isinstance(schema, dict):
-        schema.pop("additionalProperties", None)
-        for key, val in list(schema.items()):
-            remove_additional_properties(val)
-    elif isinstance(schema, list):
-        for item in schema:
-            remove_additional_properties(item)
-    return schema
+def _gemini_safe_schema(node):
+    # The Gemini Developer API does not support "additionalProperties" in a
+    # response_schema (it errors with a ValueError). Pydantic emits it from
+    # ConfigDict(extra="forbid") and from the Dict[str, Any] params field.
+    # We also drop "title" since it is noise the API ignores. Recurse through
+    # the whole schema, including $defs, to clean every nested object.
+    if isinstance(node, dict):
+        node.pop("additionalProperties", None)
+        node.pop("title", None)
+        for value in node.values():
+            _gemini_safe_schema(value)
+    elif isinstance(node, list):
+        for item in node:
+            _gemini_safe_schema(item)
+    return node
 
+
+@retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=2, max=10))
 def propose_plan_gemini(df, issues):
     # This function calls the Google Gemini API to build a plan.
     # It reads your Google Gemini API key from the environment.
@@ -196,9 +211,10 @@ def propose_plan_gemini(df, issues):
     
     client = genai.Client(api_key=api_key)
     
-    # Generate the JSON schema from Pydantic and clean it
-    schema_dict = CleaningPlan.model_json_schema()
-    schema_dict = remove_additional_properties(schema_dict)
+    # Generate the JSON schema from Pydantic, then strip keys the
+    # Gemini Developer API rejects (additionalProperties/title), which
+    # Pydantic emits from extra="forbid" and the params dict.
+    schema_dict = _gemini_safe_schema(CleaningPlan.model_json_schema())
     
     summary = f"Columns: {list(df.columns)}\nRows: {len(df)}\nIssues detected: {issues}"
     
@@ -240,6 +256,7 @@ def propose_plan_gemini(df, issues):
     return CleaningPlan.model_validate(data)
 
 
+@retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=2, max=10))
 def propose_plan_llm(df, issues):
     # This is a hook where you can connect your LangGraph or OpenAI agent.
     # It reads your API key and asks the model to think about the data problems.
